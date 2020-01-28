@@ -1,10 +1,8 @@
 [package]
-name = "toy_rsa_lib"
+name = "toy_rsa"
 version = "0.1.0"
-authors = ["Bart Massey <bart.massey@gmail.com>"]
+authors = ["Rajeswari <nbrajeswari@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-glass_pumpkin = "0.3"
-num-bigint = "0.2"
-rand = "0.6"
+toy_rsa_lib = { git = "http://github.com/pdx-cs-rust/toy-rsa-lib" }
