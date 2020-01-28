@@ -43,12 +43,14 @@ pub fn genkey() -> (u32, u32) {
 /// Encrypt the plaintext `msg` using the RSA public `key`
 /// and return the ciphertext.
 pub fn encrypt(key: u64, msg: u32) -> u64 {
+    assert!(msg != 0);
     return modexp(msg as u64, EXP, key)
 }
 
 #[test]
 fn test_encrypt() {
     assert_eq!(0x164e44b86776d497, encrypt(0xde9c5816141c8ba9, 12345));
+    assert_eq!(2790, encrypt(3233, 65));
 }
 
 /// Decrypt the cipertext `msg` using the RSA private `key`
@@ -66,4 +68,5 @@ pub fn decrypt(key: (u32, u32), msg: u64) -> u32 {
 #[test]
 fn test_decrypt() {
     assert_eq!(12345, decrypt((0xed23e6cd, 0xf050a04d), 0x164e44b86776d497));
+    assert_eq!(65, decrypt((61, 53), 2790));
 }

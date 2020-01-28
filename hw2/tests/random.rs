@@ -17,4 +17,14 @@ fn test_example() {
     println!("Encrypted = {}", encrypted);
     let decrypted = decrypt((p,q), encrypted);
     println!("Decrypted = {}", decrypted);
+    assert_eq!(decrypted, message);
+}
+
+#[test]
+#[should_panic(expected = "assertion failed: msg != 0")]
+fn test_msg_0() {
+    let (p,q) = genkey();
+    let public_key = p as u64 * q as u64;
+    let message = 0_u32;
+    let _ = encrypt(public_key, message);
 }
