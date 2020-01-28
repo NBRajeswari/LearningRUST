@@ -6,7 +6,7 @@ fn main() {
     // Message: 12345
     // Encrypted: 0x164e44b86776d497
     // Decrypted: 12345
-    let (p,q) = genkey();
+    let (p, q) = genkey();
     println!("Private Key: p = {0} q = {1}", p, q);
     let public_key = p as u64 * q as u64;
     println!("Public Key: p * q = {}", public_key);
@@ -14,6 +14,6 @@ fn main() {
     println!("Message = {}", message);
     let encrypted = encrypt(public_key, message);
     println!("Encrypted = {}", encrypted);
-    let decrypted = decrypt((p,q), encrypted);
+    let decrypted = decrypt((p, q), encrypted);
     println!("Decrypted = {}", decrypted);
 }

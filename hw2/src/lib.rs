@@ -1,15 +1,15 @@
 //! Module for toy RSA implementation.
 //!
-//! This code provides functions for 
+//! This code provides functions for
 //! RSA key generation, encryption and decryption.
-use toy_rsa_lib::*;
 use std::convert::{TryFrom, TryInto};
+use toy_rsa_lib::*;
 
 /// Fixed RSA encryption exponent.
 pub const EXP: u64 = 65_537;
 
 pub fn lambda(p: u64, q: u64) -> u64 {
-    return lcm(p - 1, q - 1)
+    lcm(p - 1, q - 1)
 }
 
 #[test]
@@ -37,14 +37,14 @@ pub fn genkey() -> (u32, u32) {
             done = true;
         }
     }
-    (p.try_into().unwrap(),q.try_into().unwrap())
+    (p.try_into().unwrap(), q.try_into().unwrap())
 }
 
 /// Encrypt the plaintext `msg` using the RSA public `key`
 /// and return the ciphertext.
 pub fn encrypt(key: u64, msg: u32) -> u64 {
     assert!(msg != 0);
-    return modexp(msg as u64, EXP, key)
+    modexp(msg as u64, EXP, key)
 }
 
 #[test]
