@@ -39,9 +39,11 @@ impl<'a> KWIndex<'a> {
     /// assert_eq!(1, index.count_matches("world"));
     /// ```
     pub fn extend_from_text(mut self, target: &'a str) -> Self {
+        fn punctuation_char(c: char) -> bool {!c.is_alphanumeric()}
         let words = target
-            .split_terminator(|c| c == ' ' || c == '.')
-            .filter(|w| w.chars().all(|x| x.is_alphanumeric()))
+            .split_whitespace()
+            .map(|w| w.trim_end_matches(punctuation_char))
+            .filter(|w| w.chars().all(|x| !punctuation_char(x)))
             .collect();
         self.0 = words;
         self
