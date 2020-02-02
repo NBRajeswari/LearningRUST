@@ -40,14 +40,15 @@ impl<'a> KWIndex<'a> {
     /// assert_eq!(1, index.count_matches("world"));
     /// ```
     pub fn extend_from_text(mut self, target: &'a str) -> Self {
-        self.0 = target.split(' ').collect();
+        let words = target.split_terminator(|c| c == ' ' || c == '.').collect();
+        self.0 = words;
         self
     }
     
     /// Count the number of occurrences of the given `keyword`
     /// that are indexed by this `KWIndex`.
     pub fn count_matches(&self, keyword: &str) -> usize {
-        4
+        self.0.iter().filter(|word| **word == keyword).count()
     }
     
     /// Count the number of words that are indexed by this
@@ -58,10 +59,6 @@ impl<'a> KWIndex<'a> {
     
     /// Is this index empty?
     pub fn is_empty(&self) -> bool {
-        self.0.len() == 0
+        self.0.is_empty()
     }
-}
-
-fn main() {
-    println!("Hello World")
 }
