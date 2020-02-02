@@ -4,12 +4,11 @@
 pub struct KWIndex<'a>(Vec<&'a str>);
 
 impl<'a> KWIndex<'a> {
-
     /// Make a new empty target words list.
     pub fn new() -> Self {
         KWIndex(Vec::new())
     }
-    
+
     /// Parse the `target` text and add the sequence of
     /// valid words contained in it to this `KWIndex`
     /// index.
@@ -40,23 +39,26 @@ impl<'a> KWIndex<'a> {
     /// assert_eq!(1, index.count_matches("world"));
     /// ```
     pub fn extend_from_text(mut self, target: &'a str) -> Self {
-        let words = target.split_terminator(|c| c == ' ' || c == '.').collect();
+        let words = target
+            .split_terminator(|c| c == ' ' || c == '.')
+            .filter(|w| w.chars().all(|x| x.is_alphanumeric()))
+            .collect();
         self.0 = words;
         self
     }
-    
+
     /// Count the number of occurrences of the given `keyword`
     /// that are indexed by this `KWIndex`.
     pub fn count_matches(&self, keyword: &str) -> usize {
         self.0.iter().filter(|word| **word == keyword).count()
     }
-    
+
     /// Count the number of words that are indexed by this
     /// `KWIndex`.
     pub fn len(&self) -> usize {
         self.0.len()
     }
-    
+
     /// Is this index empty?
     pub fn is_empty(&self) -> bool {
         self.0.is_empty()
