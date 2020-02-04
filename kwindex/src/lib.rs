@@ -66,3 +66,26 @@ impl<'a> KWIndex<'a> {
         self.0.is_empty()
     }
 }
+
+#[test]
+fn test_constructor() {
+    let index = KWIndex::new();
+    assert_eq!(0, index.len());
+    assert_eq!(true, index.is_empty());
+}
+
+#[test]
+fn test_word_seperator() {
+    let index = KWIndex::new().extend_from_text("Hello world.");
+    assert_eq!(2, index.len());
+    assert_eq!(false, index.is_empty());
+    assert_eq!(1, index.count_matches("world"));
+}
+
+#[test]
+fn test_punctuations() {
+    let index = KWIndex::new().extend_from_text("It ain't over untïl it ain't, over.");
+    assert_eq!(5, index.len());
+    assert_eq!(false, index.is_empty());
+    assert_eq!(2, index.count_matches("over"));
+}
