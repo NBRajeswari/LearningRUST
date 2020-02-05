@@ -39,31 +39,39 @@ impl<'a> KWIndex<'a> {
     /// assert_eq!(1, index.count_matches("world"));
     /// ```
     pub fn extend_from_text(mut self, target: &'a str) -> Self {
-        fn punctuation_char(c: char) -> bool {!c.is_alphanumeric()}
-        let words = target
+        let alphabet_char = |x: char| x.is_alphabetic();
+        let punctuations = |x| !alphabet_char(x);
+        let trim_end_matches = |w: &'a str| w.trim_end_matches(punctuations);
+        let words_collection = target
             .split_whitespace()
-            .map(|w| w.trim_end_matches(punctuation_char))
-            .filter(|w| w.chars().all(|x| !punctuation_char(x)))
+            .map(trim_end_matches)
+            .filter(|w| w.chars().all(alphabet_char))
             .collect();
-        self.0 = words;
+        self.0 = words_collection;
         self
     }
 
     /// Count the number of occurrences of the given `keyword`
     /// that are indexed by this `KWIndex`.
     pub fn count_matches(&self, keyword: &str) -> usize {
-        self.0.iter().filter(|word| **word == keyword).count()
+        let words_collection = &self.0;
+        words_collection
+            .iter()
+            .filter(|word| **word == keyword)
+            .count()
     }
 
     /// Count the number of words that are indexed by this
     /// `KWIndex`.
     pub fn len(&self) -> usize {
-        self.0.len()
+        let words_collection = &self.0;
+        words_collection.len()
     }
 
     /// Is this index empty?
     pub fn is_empty(&self) -> bool {
-        self.0.is_empty()
+        let words_collection = &self.0;
+        words_collection.is_empty()
     }
 }
 
